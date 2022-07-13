@@ -2,6 +2,7 @@ package com.phakel.betterschool.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import java.util.Locale;
  * @date 7/13/22 10:31 AM
  */
 @Component
+@Scope("singleton")
 public class I18nUtil {
     private final Logger logger = LoggerFactory.getLogger(I18nUtil.class);
 
