@@ -3,11 +3,13 @@ package com.phakel.betterschool.service.impl;
 import com.phakel.betterschool.dto.ClassInfo;
 import com.phakel.betterschool.dto.SchoolInfo;
 import com.phakel.betterschool.dto.UserInfo;
+import com.phakel.betterschool.entity.User;
 import com.phakel.betterschool.repository.ClazzRepository;
 import com.phakel.betterschool.repository.SchoolRepository;
 import com.phakel.betterschool.repository.UserRepository;
 import com.phakel.betterschool.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -65,5 +67,32 @@ public class UserServiceImpl implements UserService {
                 .map(ClassInfo::new)
                 .map(ClassInfo::getUsers)
                 .orElse(Collections.emptyList());
+    }
+
+    @Override
+    public boolean validateLogin(String userName, String password) {
+        return userRepository.findUserByUserName(userName)
+                .map(it -> BCrypt.checkpw(password, it.getPassword()))
+                .orElse(false);
+    }
+
+    @Override
+    public boolean createUser(User user) {
+        if (userRepository.existsUserByUserName(user.getUserName())) {
+            return false;
+        }
+
+        userRepository.save(user);
+        return true;
+    }
+
+    @Override
+    public boolean deleteUser(Long userId) {
+        if (!userRepository.existsUserByUserId(userId)) {
+            return false;
+        }
+
+        userRepository.deleteById(userId);
+        return true;
     }
 }

@@ -1,6 +1,7 @@
 package com.phakel.betterschool.service;
 
 import com.phakel.betterschool.dto.UserInfo;
+import com.phakel.betterschool.entity.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,4 +20,10 @@ public interface UserService {
     List<UserInfo> findUsersBySchoolId(Long schoolId);
 
     List<UserInfo> findUsersByClassId(Long classId);
+
+    boolean validateLogin(String userName, String password);
+
+    boolean createUser(User user);
+
+    boolean deleteUser(Long userId);
 }
