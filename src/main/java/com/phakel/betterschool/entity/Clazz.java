@@ -20,6 +20,9 @@ public class Clazz {
     @Column(name = "class_id", nullable = false)
     private Long classId;
 
+    @Column(name = "class_name", nullable = false)
+    private String className;
+
     @ManyToOne(cascade = CascadeType.ALL)
     private School school;
 
