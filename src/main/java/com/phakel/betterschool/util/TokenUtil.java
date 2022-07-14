@@ -7,6 +7,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
@@ -20,6 +21,7 @@ import java.util.Optional;
  * @date 7/13/22 10:32 AM
  */
 @Component
+@Scope("singleton")
 public class TokenUtil {
 
     private final Logger logger = LoggerFactory.getLogger(TokenUtil.class);
@@ -32,8 +34,8 @@ public class TokenUtil {
 
     public String generateToken(TokenDetail tokenDetail) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("playerName", tokenDetail.getPlayerName());
-        claims.put("role", tokenDetail.isAdmin());
+        claims.put("playerName", tokenDetail.getUserName());
+        claims.put("role", tokenDetail.getUserType());
         claims.put("created", this.generateCurrentDate());
         return this.generateToken(claims);
     }
