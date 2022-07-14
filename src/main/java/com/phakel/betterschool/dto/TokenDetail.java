@@ -9,6 +9,6 @@ import lombok.Data;
  */
 @Data
 public class TokenDetail {
-    private String userName;
+    private String username;
     private User.UserType userType;
 }

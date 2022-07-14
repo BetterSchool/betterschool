@@ -40,8 +40,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserInfo> findUserByUserName(String userName) {
-        return userRepository.findUserByUserName(userName)
+    public Optional<UserInfo> findUserByUsername(String userName) {
+        return userRepository.findUserByUsername(userName)
                 .map(UserInfo::new);
     }
 
@@ -71,14 +71,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean validateLogin(String userName, String password) {
-        return userRepository.findUserByUserName(userName)
+        return userRepository.findUserByUsername(userName)
                 .map(it -> BCrypt.checkpw(password, it.getPassword()))
                 .orElse(false);
     }
 
     @Override
     public boolean createUser(User user) {
-        if (userRepository.existsUserByUserName(user.getUserName())) {
+        if (userRepository.existsUserByUsername(user.getUsername())) {
             return false;
         }
 

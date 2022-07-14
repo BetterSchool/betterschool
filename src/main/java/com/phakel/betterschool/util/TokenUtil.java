@@ -34,7 +34,7 @@ public class TokenUtil {
 
     public String generateToken(TokenDetail tokenDetail) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("playerName", tokenDetail.getUserName());
+        claims.put("playerName", tokenDetail.getUsername());
         claims.put("role", tokenDetail.getUserType());
         claims.put("created", this.generateCurrentDate());
         return this.generateToken(claims);
