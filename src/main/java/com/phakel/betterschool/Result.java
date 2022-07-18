@@ -1,9 +1,9 @@
 package com.phakel.betterschool;
 
+import com.phakel.betterschool.form.FieldError;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 
 import java.util.List;
 

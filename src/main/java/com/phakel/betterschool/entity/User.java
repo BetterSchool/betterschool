@@ -11,7 +11,7 @@ import java.util.List;
  * @date 7/13/22 10:44 AM
  */
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @Getter
 @Setter
 public class User {
@@ -27,13 +27,13 @@ public class User {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(name = "user_name", unique = true, nullable = false)
-    private String userName;
+    @Column(name = "username", unique = true, nullable = false)
+    private String username;
 
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "description", nullable = false, unique = true)
+    @Column(name = "description")
     private String description;
 
     @Enumerated(EnumType.STRING)

@@ -17,6 +17,13 @@ import java.util.Locale;
 @Scope("singleton")
 public class I18nUtil {
     private final Logger logger = LoggerFactory.getLogger(I18nUtil.class);
+    ResourceBundleMessageSource messageSource;
+
+    public I18nUtil() {
+        messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasename("i18n/messages");
+        messageSource.setDefaultEncoding("UTF-8");
+    }
 
     public String getMessage(String code) {
         return getMessage(code, null);
@@ -29,8 +36,6 @@ public class I18nUtil {
     public String getMessage(String code, Object[] args, String defaultMessage) {
 
         Locale locale = LocaleContextHolder.getLocale();
-        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasename("i18n/messages");
         String content;
 
         try {

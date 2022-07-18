@@ -1,5 +1,6 @@
 package com.phakel.betterschool.dto;
 
+import com.phakel.betterschool.entity.User;
 import lombok.Data;
 
 /**
@@ -8,6 +9,6 @@ import lombok.Data;
  */
 @Data
 public class TokenDetail {
-    private String playerName;
-    private boolean isAdmin;
+    private String username;
+    private User.UserType userType;
 }

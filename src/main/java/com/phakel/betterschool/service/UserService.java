@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface UserService {
     Optional<UserInfo> findUserByUserId(Long userId);
 
-    Optional<UserInfo> findUserByUserName(String userName);
+    Optional<UserInfo> findUserByUsername(String userName);
 
     List<UserInfo> findUsersBySchoolName(String schoolName);
 

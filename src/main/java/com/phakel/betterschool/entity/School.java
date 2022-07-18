@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author EvanLuo42
@@ -24,8 +24,8 @@ public class School {
     private String schoolName;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<User> users;
+    private Set<User> users;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Clazz> classes;
+    private Set<Clazz> classes;
 }
