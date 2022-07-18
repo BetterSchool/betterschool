@@ -11,12 +11,21 @@ import javax.validation.constraints.*;
  */
 @Data
 public class RegisterForm extends Form {
-    @NotNull(message = "form.user.name.required")
+    @NotEmpty(message = "form.user.name.required")
     @Size(min = 3, max = 20, message = "form.user.name.length")
-    private String userName;
+    private String username;
 
-    @NotNull(message = "form.user.password.required")
+    @NotEmpty(message = "form.user.password.required")
     private String password;
 
-    private User.UserType userType;
+    @Pattern(regexp = "STUDENT|TEACHER|PARENTS", message = "form.user.usertype.notExisted")
+    private String userType;
+
+    public User.UserType getUserType() {
+        return User.UserType.valueOf(this.userType);
+    }
+
+    public void setUserType(User.UserType userType) {
+        this.userType = String.valueOf(userType);
+    }
 }

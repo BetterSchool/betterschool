@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,11 +48,11 @@ public class UserController {
             return result.formError(i18nUtil.getMessage("user.login.formError"), formValidate);
         }
 
-        if (!userService.validateLogin(form.getUserName(), form.getPassword())) {
+        if (!userService.validateLogin(form.getUsername(), form.getPassword())) {
             return result.unAuthorized(i18nUtil.getMessage("user.login.authorizeFailed"));
         }
 
-        return userService.findUserByUsername(form.getUserName())
+        return userService.findUserByUsername(form.getUsername())
                 .map(it -> {
                     TokenDetail tokenDetail = new TokenDetail();
                     tokenDetail.setUsername(it.getUsername());
@@ -72,7 +73,7 @@ public class UserController {
         }
 
         User user = new User();
-        user.setUsername(form.getUserName());
+        user.setUsername(form.getUsername());
         user.setUserType(form.getUserType());
         user.setPassword(BCrypt.hashpw(form.getPassword(), BCrypt.gensalt()));
 
@@ -108,14 +109,16 @@ public class UserController {
     @GetMapping(path = "/user/id/{userId}")
     public ResponseEntity<Result> getUserByUserId(@PathVariable Long userId) {
         Result result = new Result();
-        return result.success(i18nUtil.getMessage("user.getUserByUserId.success"),
-                userService.findUserByUserId(userId));
+        return userService.findUserByUserId(userId)
+                .map(it -> result.success(i18nUtil.getMessage("user.getUserByUserId.success"), it))
+                .orElseGet(() -> result.notFound(i18nUtil.getMessage("user.getUserByUserId.notFound")));
     }
 
-    @GetMapping(path = "/user/name/{userName}")
-    public ResponseEntity<Result> getUserByUserName(@PathVariable String userName) {
+    @GetMapping(path = "/user/name/{username}")
+    public ResponseEntity<Result> getUserByUserName(@PathVariable String username) {
         Result result = new Result();
-        return result.success(i18nUtil.getMessage("user.getUserByUsername.success"),
-                userService.findUserByUsername(userName));
+        return userService.findUserByUsername(username)
+                .map(it -> result.success(i18nUtil.getMessage("user.getUserByUsername.success"), it))
+                .orElseGet(() -> result.notFound(i18nUtil.getMessage("user.getUserByUsername.notFound")));
     }
 }

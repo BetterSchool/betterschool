@@ -10,10 +10,10 @@ import javax.validation.constraints.*;
  */
 @Data
 public class LoginForm extends Form {
-    @NotNull(message = "form.user.name.required")
+    @NotEmpty(message = "form.user.name.required")
     @Size(min = 3, max = 20, message = "form.user.name.length")
-    private String userName;
+    private String username;
 
-    @NotNull(message = "form.user.password.required")
+    @NotEmpty(message = "form.user.password.required")
     private String password;
 }
