@@ -24,6 +24,8 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.Locale;
+
 /**
  * @author EvanLuo42
  * @date 7/18/22 2:16 PM
@@ -62,14 +64,15 @@ public class UserTest {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                 .post("/user/register")
                 .content(new ObjectMapper().writeValueAsString(form))
-                .contentType(MediaType.APPLICATION_JSON);
+                .contentType(MediaType.APPLICATION_JSON)
+                .locale(Locale.CHINA);
         MockHttpServletResponse response = this.mockMvc.perform(requestBuilder)
                 .andReturn()
                 .getResponse();
 
         Result result = new Result();
         result.setStatus(Result.Status.SUCCESS);
-        result.setMessage("Register successfully.");
+        result.setMessage("注册成功");
         result.setData(userService.findUserByUsername("test-username").orElseThrow());
 
         Assert.assertEquals(response.getStatus(), HttpStatus.OK.value());
