@@ -1,13 +1,11 @@
 package com.phakel.betterschool;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.phakel.betterschool.controller.UserController;
+import com.phakel.betterschool.dto.UserInfo;
 import com.phakel.betterschool.entity.User;
 import com.phakel.betterschool.form.LoginTestForm;
-import com.phakel.betterschool.form.RegisterForm;
 import com.phakel.betterschool.form.RegisterTestForm;
-import com.phakel.betterschool.repository.UserRepository;
 import com.phakel.betterschool.service.CommonService;
 import com.phakel.betterschool.service.UserService;
 import com.phakel.betterschool.util.I18nUtil;
@@ -16,22 +14,16 @@ import org.junit.Assert;
 import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.Locale;
 
 /**
  * @author EvanLuo42
@@ -73,7 +65,7 @@ public class UserTest {
         form.setPassword("test-password");
         form.setUsername("test-username");
 
-        MockHttpServletResponse response = mockMvc.perform(RequestBuildUtil.buildRequestWithBody(form, "/user/register"))
+        MockHttpServletResponse response = mockMvc.perform(RequestBuildUtil.buildPostRequestWithBody(form, "/user/register"))
                 .andReturn()
                 .getResponse();
 
@@ -93,11 +85,53 @@ public class UserTest {
         form.setPassword("test-password");
         form.setUsername("test-username");
 
-        MockHttpServletResponse response = mockMvc.perform(RequestBuildUtil.buildRequestWithBody(form, "/user/login"))
+        MockHttpServletResponse response = mockMvc.perform(RequestBuildUtil.buildPostRequestWithBody(form, "/user/login"))
                 .andReturn()
                 .getResponse();
 
         Assert.assertEquals(response.getStatus(), HttpStatus.OK.value());
-        Assert.assertNotNull(new ObjectMapper().readValue(response.getContentAsString(StandardCharsets.UTF_8), Result.class));
+        Assert.assertNotNull(new ObjectMapper().readValue(response.getContentAsString(StandardCharsets.UTF_8), Result.class).getData());
+    }
+
+    @Test
+    @Order(3)
+    public void findUserByUsernameTest() throws Exception {
+        MockHttpServletResponse response = mockMvc.perform(RequestBuildUtil.buildGetRequestWithPathParam("/user/name/{username}", "test-username"))
+                .andReturn()
+                .getResponse();
+
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUserId(1L);
+        userInfo.setUsername("test-username");
+        userInfo.setUserType(User.UserType.STUDENT);
+
+        Result result = new Result();
+        result.setStatus(Result.Status.SUCCESS);
+        result.setMessage("通过用户名获取用户成功");
+        result.setData(userInfo);
+
+        Assert.assertEquals(response.getStatus(), HttpStatus.OK.value());
+        Assert.assertEquals(response.getContentAsString(StandardCharsets.UTF_8), new ObjectMapper().writeValueAsString(result));
+    }
+
+    @Test
+    @Order(4)
+    public void findUserByUserIdTest() throws Exception {
+        MockHttpServletResponse response = mockMvc.perform(RequestBuildUtil.buildGetRequestWithPathParam("/user/id/{userId}", "1"))
+                .andReturn()
+                .getResponse();
+
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUserId(1L);
+        userInfo.setUsername("test-username");
+        userInfo.setUserType(User.UserType.STUDENT);
+
+        Result result = new Result();
+        result.setStatus(Result.Status.SUCCESS);
+        result.setMessage("通过用户 ID 获取用户成功");
+        result.setData(userInfo);
+
+        Assert.assertEquals(response.getStatus(), HttpStatus.OK.value());
+        Assert.assertEquals(response.getContentAsString(StandardCharsets.UTF_8), new ObjectMapper().writeValueAsString(result));
     }
 }

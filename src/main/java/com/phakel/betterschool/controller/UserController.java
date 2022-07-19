@@ -29,7 +29,7 @@ public class UserController {
     private final UserService userService;
     private final CommonService commonService;
     private final I18nUtil i18nUtil;
-    private TokenUtil tokenUtil;
+    private final TokenUtil tokenUtil;
 
     @Autowired
     public UserController(UserService userService, CommonService commonService, I18nUtil i18nUtil, TokenUtil tokenUtil, TokenUtil tokenUtil1) {
