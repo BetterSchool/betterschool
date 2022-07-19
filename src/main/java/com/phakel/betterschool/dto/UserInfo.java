@@ -2,12 +2,14 @@ package com.phakel.betterschool.dto;
 
 import com.phakel.betterschool.entity.User;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author EvanLuo42
  * @date 7/13/22 6:40 PM
  */
 @Data
+@NoArgsConstructor
 public class UserInfo {
     private Long userId;
     private String username;

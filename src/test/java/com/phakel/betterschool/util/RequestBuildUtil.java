@@ -13,19 +13,38 @@ import java.util.Locale;
  * @date 7/18/22 9:57 PM
  */
 public class RequestBuildUtil {
-    public static MockHttpServletRequestBuilder buildRequestWithBody(Object form, String path) throws JsonProcessingException {
-        return buildRequest(path)
+    public static MockHttpServletRequestBuilder buildPostRequestWithBody(Object form, String path) throws JsonProcessingException {
+        return buildPostRequest(path)
                 .content(new ObjectMapper().writeValueAsString(form));
     }
 
-    public static MockHttpServletRequestBuilder buildRequestWithUrlParams(String path, String paramName, String paramValue) {
-        return buildRequest(path)
+    public static MockHttpServletRequestBuilder buildPostRequestWithUrlParam(String path, String paramName, String paramValue) {
+        return buildPostRequest(path)
                 .param(paramName, paramValue);
     }
 
-    public static MockHttpServletRequestBuilder buildRequest(String path) {
+    public static MockHttpServletRequestBuilder buildPostRequest(String path) {
         return MockMvcRequestBuilders
                 .post(path)
+                .contentType(MediaType.APPLICATION_JSON)
+                .locale(Locale.CHINA);
+    }
+
+    public static MockHttpServletRequestBuilder buildGetRequestWithUrlParam(String path, String paramName, String paramValue) {
+        return buildGetRequest(path)
+                .param(paramName, paramValue);
+    }
+
+    public static MockHttpServletRequestBuilder buildGetRequestWithPathParam(String path, String param) {
+        return MockMvcRequestBuilders
+                .get(path, param)
+                .contentType(MediaType.APPLICATION_JSON)
+                .locale(Locale.CHINA);
+    }
+
+    public static MockHttpServletRequestBuilder buildGetRequest(String path) {
+        return MockMvcRequestBuilders
+                .get(path)
                 .contentType(MediaType.APPLICATION_JSON)
                 .locale(Locale.CHINA);
     }
