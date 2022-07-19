@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.phakel.betterschool.controller.UserController;
 import com.phakel.betterschool.entity.User;
+import com.phakel.betterschool.form.LoginTestForm;
 import com.phakel.betterschool.form.RegisterForm;
 import com.phakel.betterschool.form.RegisterTestForm;
 import com.phakel.betterschool.repository.UserRepository;
@@ -12,8 +13,7 @@ import com.phakel.betterschool.service.UserService;
 import com.phakel.betterschool.util.I18nUtil;
 import com.phakel.betterschool.util.RequestBuildUtil;
 import org.junit.Assert;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -39,6 +39,7 @@ import java.util.Locale;
  */
 @SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UserTest {
     @Autowired
     private WebApplicationContext wac;
@@ -65,6 +66,7 @@ public class UserTest {
     }
 
     @Test
+    @Order(1)
     public void registerTest() throws Exception {
         RegisterTestForm form = new RegisterTestForm();
         form.setUserType(User.UserType.STUDENT.name());
@@ -82,5 +84,20 @@ public class UserTest {
 
         Assert.assertEquals(response.getStatus(), HttpStatus.OK.value());
         Assert.assertEquals(response.getContentAsString(StandardCharsets.UTF_8), new ObjectMapper().writeValueAsString(result));
+    }
+
+    @Test
+    @Order(2)
+    public void loginTest() throws Exception {
+        LoginTestForm form = new LoginTestForm();
+        form.setPassword("test-password");
+        form.setUsername("test-username");
+
+        MockHttpServletResponse response = mockMvc.perform(RequestBuildUtil.buildRequestWithBody(form, "/user/login"))
+                .andReturn()
+                .getResponse();
+
+        Assert.assertEquals(response.getStatus(), HttpStatus.OK.value());
+        Assert.assertNotNull(new ObjectMapper().readValue(response.getContentAsString(StandardCharsets.UTF_8), Result.class));
     }
 }
