@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "class")
 @Getter
 @Setter
-public class Clazz {
+public class Class {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "class_id", nullable = false)

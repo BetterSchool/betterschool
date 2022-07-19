@@ -24,8 +24,5 @@ public class School {
     private String schoolName;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<User> users;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Clazz> classes;
+    private Set<Class> classes;
 }

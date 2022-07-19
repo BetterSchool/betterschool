@@ -40,5 +40,5 @@ public class User {
     private UserType userType = UserType.STUDENT;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Clazz> classes;
+    private List<Class> classes;
 }

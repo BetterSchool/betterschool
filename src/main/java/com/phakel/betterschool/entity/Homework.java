@@ -26,6 +26,14 @@ public class Homework {
     @Column(name = "content", nullable = false)
     private String content;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = User.class)
+    @JoinColumn(name = "author_id", referencedColumnName = "user_id")
+    private User author;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Class.class)
+    @JoinColumn(name = "class_id", referencedColumnName = "class_id")
+    private Class clazz;
+
     @Temporal(TemporalType.DATE)
     private Date beginDate;
 

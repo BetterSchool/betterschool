@@ -4,7 +4,7 @@ import com.phakel.betterschool.dto.ClassInfo;
 import com.phakel.betterschool.dto.SchoolInfo;
 import com.phakel.betterschool.dto.UserInfo;
 import com.phakel.betterschool.entity.User;
-import com.phakel.betterschool.repository.ClazzRepository;
+import com.phakel.betterschool.repository.ClassRepository;
 import com.phakel.betterschool.repository.SchoolRepository;
 import com.phakel.betterschool.repository.UserRepository;
 import com.phakel.betterschool.service.UserService;
@@ -24,13 +24,13 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final SchoolRepository schoolRepository;
-    private final ClazzRepository clazzRepository;
+    private final ClassRepository classRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, SchoolRepository schoolRepository, ClazzRepository clazzRepository) {
+    public UserServiceImpl(UserRepository userRepository, SchoolRepository schoolRepository, ClassRepository classRepository) {
         this.userRepository = userRepository;
         this.schoolRepository = schoolRepository;
-        this.clazzRepository = clazzRepository;
+        this.classRepository = classRepository;
     }
 
     @Override
@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserInfo> findUsersByClassId(Long classId) {
-        return clazzRepository.findClazzByClassId(classId)
+        return classRepository.findClassByClassId(classId)
                 .map(ClassInfo::new)
                 .map(ClassInfo::getUsers)
                 .orElse(Collections.emptyList());
