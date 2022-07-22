@@ -16,7 +16,7 @@ import java.util.Date;
 @Setter
 public class Homework {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "homework_id", nullable = false)
     private Long homeworkId;
 

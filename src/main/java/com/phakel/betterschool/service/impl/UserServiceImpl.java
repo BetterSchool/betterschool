@@ -8,6 +8,7 @@ import com.phakel.betterschool.repository.ClassRepository;
 import com.phakel.betterschool.repository.SchoolRepository;
 import com.phakel.betterschool.repository.UserRepository;
 import com.phakel.betterschool.service.UserService;
+import com.phakel.betterschool.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -26,11 +27,14 @@ public class UserServiceImpl implements UserService {
     private final SchoolRepository schoolRepository;
     private final ClassRepository classRepository;
 
+    private final TokenUtil tokenUtil;
+
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, SchoolRepository schoolRepository, ClassRepository classRepository) {
+    public UserServiceImpl(UserRepository userRepository, SchoolRepository schoolRepository, ClassRepository classRepository, TokenUtil tokenUtil) {
         this.userRepository = userRepository;
         this.schoolRepository = schoolRepository;
         this.classRepository = classRepository;
+        this.tokenUtil = tokenUtil;
     }
 
     @Override
@@ -67,6 +71,54 @@ public class UserServiceImpl implements UserService {
                 .map(ClassInfo::new)
                 .map(ClassInfo::getUsers)
                 .orElse(Collections.emptyList());
+    }
+
+    @Override
+    public boolean checkUserIsInSchoolByUsername(String username, Long schoolId) {
+        Optional<SchoolInfo> schoolInfo = schoolRepository.findSchoolBySchoolId(schoolId)
+                .map(SchoolInfo::new);
+
+        Optional<UserInfo> userInfo = userRepository.findUserByUsername(username)
+                .map(UserInfo::new);
+
+        if (schoolInfo.isEmpty() || userInfo.isEmpty()) {
+            return false;
+        }
+
+        System.out.println(schoolInfo.get().getUsers());
+
+        return schoolInfo.get().getUsers().contains(userInfo.get());
+    }
+
+    @Override
+    public boolean checkUserIsInSchoolByUsername(String username, String schoolName) {
+        Optional<SchoolInfo> schoolInfo = schoolRepository.findSchoolBySchoolName(schoolName)
+                .map(SchoolInfo::new);
+
+        Optional<UserInfo> userInfo = userRepository.findUserByUsername(username)
+                .map(UserInfo::new);
+
+        if (schoolInfo.isEmpty() || userInfo.isEmpty()) {
+            return false;
+        }
+
+        return schoolInfo.get().getUsers().contains(userInfo.get());
+    }
+
+    @Override
+    public boolean checkUserIsInClassByUsername(String username, Long classId) {
+        Optional<ClassInfo> classInfo = classRepository.findClassByClassId(classId)
+                .map(ClassInfo::new);
+
+        Optional<UserInfo> userInfo = userRepository.findUserByUsername(username)
+                .map(UserInfo::new);
+
+        if (classInfo.isEmpty() || userInfo.isEmpty()) {
+            System.out.println("A");
+            return false;
+        }
+
+        return classInfo.get().getUsers().contains(userInfo.get());
     }
 
     @Override

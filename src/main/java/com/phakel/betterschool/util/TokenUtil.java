@@ -14,7 +14,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * @author EvanLuo42
@@ -57,7 +56,11 @@ public class TokenUtil {
         return new Date(System.currentTimeMillis());
     }
 
-    public Optional<String> getPlayerNameFromToken(String token) {
+    public boolean checkToken(String token) {
+        return !(getClaimsFromToken(token) == null);
+    }
+
+    public String getUsernameFromToken(String token) {
         String username;
         try {
             final Claims claims = getClaimsFromToken(token);
@@ -67,7 +70,7 @@ public class TokenUtil {
             username = null;
             logger.error(e.getMessage());
         }
-        return Optional.ofNullable(username);
+        return username;
     }
 
     public String getRoleFromToken(String token) {

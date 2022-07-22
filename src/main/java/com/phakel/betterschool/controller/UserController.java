@@ -31,11 +31,11 @@ public class UserController {
     private final TokenUtil tokenUtil;
 
     @Autowired
-    public UserController(UserService userService, CommonService commonService, I18nUtil i18nUtil, TokenUtil tokenUtil, TokenUtil tokenUtil1) {
+    public UserController(UserService userService, CommonService commonService, I18nUtil i18nUtil, TokenUtil tokenUtil) {
         this.userService = userService;
         this.commonService = commonService;
         this.i18nUtil = i18nUtil;
-        this.tokenUtil = tokenUtil1;
+        this.tokenUtil = tokenUtil;
     }
 
     @PostMapping(path = "/user/login")
@@ -48,7 +48,7 @@ public class UserController {
         }
 
         if (!userService.validateLogin(form.getUsername(), form.getPassword())) {
-            return result.unAuthorized(i18nUtil.getMessage("user.login.authorizeFailed"));
+            return result.unauthorized(i18nUtil.getMessage("user.login.authorizeFailed"));
         }
 
         return userService.findUserByUsername(form.getUsername())
@@ -85,29 +85,65 @@ public class UserController {
     }
 
     @GetMapping(path = "/users/school/id/{schoolId}")
-    public ResponseEntity<Result> getUsersBySchoolId(@PathVariable Long schoolId) {
+    public ResponseEntity<Result> getUsersBySchoolId(@PathVariable Long schoolId, @RequestHeader(value = "token") String token) {
         Result result = new Result();
+
+        if (!tokenUtil.checkToken(token)) {
+            return result.unauthorized(i18nUtil.getMessage("user.getUsersBySchoolId.unauthorized"));
+        }
+
+        if (!userService.checkUserIsInSchoolByUsername(tokenUtil.getUsernameFromToken(token), schoolId)) {
+            return result.unauthorized(i18nUtil.getMessage("user.getUsersBySchoolId.permissionNotAllow"));
+        }
+
         return result.success(i18nUtil.getMessage("user.getUsersBySchoolId.success"),
                 userService.findUsersBySchoolId(schoolId));
     }
 
     @GetMapping(path = "/users/school/name/{schoolName}")
-    public ResponseEntity<Result> getUsersBySchoolName(@PathVariable String schoolName) {
+    public ResponseEntity<Result> getUsersBySchoolName(@PathVariable String schoolName, @RequestHeader(value = "token") String token) {
         Result result = new Result();
+
+        if (!tokenUtil.checkToken(token)) {
+            return result.unauthorized(i18nUtil.getMessage("user.getUsersBySchoolId.unauthorized"));
+        }
+
+        if (!userService.checkUserIsInSchoolByUsername(tokenUtil.getUsernameFromToken(token), schoolName)) {
+            return result.unauthorized(i18nUtil.getMessage("user.getUsersBySchoolId.permissionNotAllow"));
+        }
+
         return result.success(i18nUtil.getMessage("user.getUsersBySchoolName.success"),
                 userService.findUsersBySchoolName(schoolName));
     }
 
     @GetMapping(path = "/users/class/id/{classId}")
-    public ResponseEntity<Result> getUsersByClassId(@PathVariable Long classId) {
+    public ResponseEntity<Result> getUsersByClassId(@PathVariable Long classId, @RequestHeader(value = "token") String token) {
         Result result = new Result();
+
+        if (!tokenUtil.checkToken(token)) {
+            return result.unauthorized(i18nUtil.getMessage("user.getUsersByClassId.unauthorized"));
+        }
+
+        if (!userService.checkUserIsInClassByUsername(tokenUtil.getUsernameFromToken(token), classId)) {
+            return result.unauthorized(i18nUtil.getMessage("user.getUsersByClassId.permissionNotAllow"));
+        }
+
         return result.success(i18nUtil.getMessage("user.getUsersByClassId.success"),
                 userService.findUsersByClassId(classId));
     }
 
     @GetMapping(path = "/user/id/{userId}")
-    public ResponseEntity<Result> getUserByUserId(@PathVariable Long userId) {
+    public ResponseEntity<Result> getUserByUserId(@PathVariable Long userId, @RequestHeader(value = "token") String token) {
         Result result = new Result();
+
+        if (!tokenUtil.checkToken(token)) {
+            return result.unauthorized(i18nUtil.getMessage("user.getUsersByClassId.unauthorized"));
+        }
+
+        if (!userService.checkUserIsInClassByUsername(tokenUtil.getUsernameFromToken(token), )) {
+            return result.unauthorized(i18nUtil.getMessage("user.getUsersByClassId.permissionNotAllow"));
+        }
+
         return userService.findUserByUserId(userId)
                 .map(it -> result.success(i18nUtil.getMessage("user.getUserByUserId.success"), it))
                 .orElseGet(() -> result.notFound(i18nUtil.getMessage("user.getUserByUserId.notFound")));

@@ -16,7 +16,7 @@ import java.util.Set;
 @Setter
 public class School {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "school_id", nullable = false)
     private Long schoolId;
 

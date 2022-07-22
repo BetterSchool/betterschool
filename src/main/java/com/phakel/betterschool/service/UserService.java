@@ -21,6 +21,12 @@ public interface UserService {
 
     List<UserInfo> findUsersByClassId(Long classId);
 
+    boolean checkUserIsInSchoolByUsername(String username, Long schoolId);
+
+    boolean checkUserIsInSchoolByUsername(String username, String schoolName);
+
+    boolean checkUserIsInClassByUsername(String username, Long classId);
+
     boolean validateLogin(String userName, String password);
 
     boolean createUser(User user);

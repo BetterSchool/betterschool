@@ -45,7 +45,7 @@ public class Result {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(this);
     }
 
-    public ResponseEntity<Result> unAuthorized(String message) {
+    public ResponseEntity<Result> unauthorized(String message) {
         this.setStatus(Status.UNAUTHORIZED);
         this.setMessage(message);
         this.setData(null);

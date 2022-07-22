@@ -25,9 +25,15 @@ public class ClassServiceImpl implements ClassService {
 
     @Override
     public boolean addUserToClassByUserIdAndClassId(Long userId, Long classId) {
+        System.out.println(classRepository.findAll().get(0).getClassId());
         return classRepository.findClassByClassId(classId)
                 .map(it -> {
                     if (!userRepository.existsUserByUserId(userId)) {
+                        System.out.println("A");
+                        return false;
+                    }
+
+                    if (it.getUsers().contains(userRepository.findUserByUserId(userId).get())) {
                         return false;
                     }
 
