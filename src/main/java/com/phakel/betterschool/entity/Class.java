@@ -14,9 +14,9 @@ import java.util.Set;
 @Table(name = "class")
 @Getter
 @Setter
-public class Clazz {
+public class Class {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "class_id", nullable = false)
     private Long classId;
 

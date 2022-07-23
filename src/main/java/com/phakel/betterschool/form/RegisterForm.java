@@ -2,6 +2,7 @@ package com.phakel.betterschool.form;
 
 import com.phakel.betterschool.entity.User;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.*;
 
@@ -10,6 +11,7 @@ import javax.validation.constraints.*;
  * @date 7/14/22 4:05 PM
  */
 @Data
+@EqualsAndHashCode(callSuper=false)
 public class RegisterForm extends Form {
     @NotEmpty(message = "form.user.name.required")
     @Size(min = 3, max = 20, message = "form.user.name.length")

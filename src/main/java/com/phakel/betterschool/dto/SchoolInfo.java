@@ -24,9 +24,5 @@ public class SchoolInfo {
                 .stream()
                 .map(ClassInfo::new)
                 .collect(Collectors.toList());
-        this.users = school.getUsers()
-                .stream()
-                .map(UserInfo::new)
-                .collect(Collectors.toList());
     }
 }

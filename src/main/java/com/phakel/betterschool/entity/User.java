@@ -23,7 +23,7 @@ public class User {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
@@ -40,5 +40,5 @@ public class User {
     private UserType userType = UserType.STUDENT;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Clazz> classes;
+    private List<Class> classes;
 }

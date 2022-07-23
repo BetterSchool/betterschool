@@ -1,6 +1,6 @@
 package com.phakel.betterschool.dto;
 
-import com.phakel.betterschool.entity.Clazz;
+import com.phakel.betterschool.entity.Class;
 import lombok.Data;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public class ClassInfo {
     private String className;
     private List<UserInfo> users;
 
-    public ClassInfo(Clazz clazz) {
+    public ClassInfo(Class clazz) {
         this.classId = clazz.getClassId();
         this.className = clazz.getClassName();
         this.users = clazz.getUsers()

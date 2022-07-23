@@ -16,7 +16,7 @@ import java.util.Set;
 @Setter
 public class School {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "school_id", nullable = false)
     private Long schoolId;
 
@@ -24,8 +24,5 @@ public class School {
     private String schoolName;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<User> users;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Clazz> classes;
+    private Set<Class> classes;
 }
